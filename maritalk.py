@@ -1,6 +1,6 @@
 import requests
 
-url = "https://chat.maritaca.ai/api/chat/inference"
+api_url = "https://chat.maritaca.ai/api/chat/inference"
 
 messages = [
     {"role": "user", "content": "bom dia, esta é a mensagem do usuario"},
@@ -25,13 +25,15 @@ def create_request_data(messages, do_sample=True, max_tokens=200, temperature=0.
 
 request_data = create_request_data(messages)
 
+def post_request(api_url, request_data, headers):
+    return requests.post(
+        api_url,
+        json=request_data,
+        headers=headers
+    )
 
 def get_maritalk_response(request_data, headers):
-  response = requests.post(
-      url,
-      json=request_data,
-      headers=headers
-  )
+  response = post_request(api_url, request_data, headers)
 
   if response.status_code == 429:
     print("rate limited, tente novamente em breve")
