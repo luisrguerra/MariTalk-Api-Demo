@@ -20,6 +20,7 @@ def create_request_data(messages, do_sample=True, max_tokens=200, temperature=0.
         "top_p": top_p,
     }
 
+# Função para enviar a solicitação POST
 def post_request(api_url, request_data, headers):
     return requests.post(
         api_url,
@@ -27,6 +28,7 @@ def post_request(api_url, request_data, headers):
         headers=headers
     )
 
+# Função para verificar se atingiu o limite de envios por segundo
 def check_rate_limit(response):
     if response.status_code == 429:
         return True
@@ -54,11 +56,12 @@ messages = []
 print(Fore.GREEN + "MaritaTalk - API Demo")
 while True:
    
+  # Solicita a mensagem do usuário
   user_message = input(Fore.YELLOW + "Você: " + Fore.WHITE)
   
-  # Adicione a mensagem do usuário ao histórico
+  # Adiciona a mensagem do usuário ao histórico
   messages.append({"role": "user", "content": user_message})
-
+  
   request_data = create_request_data(messages)
 
   # Obtenha a resposta do assistente
@@ -66,5 +69,6 @@ while True:
   
   # Adicione a resposta do assistente ao histórico
   messages.append({"role": "assistant", "content": assistant_response})
-
+  
+  # Imprime a resposta do assistente
   print(Fore.GREEN + "MariTalk: "+ Fore.WHITE + assistant_response)
