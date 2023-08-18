@@ -2,17 +2,13 @@ import requests
 
 api_url = "https://chat.maritaca.ai/api/chat/inference"
 
-messages = [
-    {"role": "user", "content": "bom dia, esta é a mensagem do usuario"},
-    {"role": "assistant", "content": "bom dia, esta é a resposta do assistente"},
-    {"role": "user", "content": "Qual é o sentido da vida?"},
-]
-
 api_key = ""  # Coloque aqui a sua chave de API (ex: "10035481...").
 
-auth_header = {
-    "authorization": f"Key {api_key}"
-}
+def create_auth_header(api_key):
+    return {
+        "authorization": f"Key {api_key}"
+    }
+
 
 def create_request_data(messages, do_sample=True, max_tokens=200, temperature=0.7, top_p=0.95):
     return {
@@ -30,19 +26,37 @@ def post_request(api_url, request_data, headers):
         headers=headers
     )
 
+def check_rate_limit(response):
+    if response.status_code == 429:
+        return True
+    else:
+        return False
+
 def get_maritalk_response(request_data, headers):
   response = post_request(api_url, request_data, headers)
 
-  if response.status_code == 429:
-    print("rate limited, tente novamente em breve")
+  if check_rate_limit(response):
+     print("Limite de taxa atingido, tente novamente em breve")
 
   elif response.ok:
     data=response.json()
-    print(data["answer"])
+    print("Resposta: " + data["answer"])
 
   else:
     response.raise_for_status()
 
-request_data = create_request_data(messages)
+auth_header = create_auth_header(api_key)
 
-get_maritalk_response(request_data, auth_header)
+while True:
+   
+  message = input("Insira sua mensagem: ")
+  
+  messages = [
+      ##{"role": "user", "content": "bom dia, esta é a mensagem do usuario"},
+      ##{"role": "assistant", "content": "bom dia, esta é a resposta do assistente"},
+      {"role": "user", "content": message},
+  ]
+  
+  request_data = create_request_data(messages)
+  
+  get_maritalk_response(request_data, auth_header)
