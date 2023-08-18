@@ -51,9 +51,10 @@ def get_maritalk_response(request_data):
 # Inicialize a lista de mensagens
 messages = []
 
+print(Fore.GREEN + "MaritaTalk - API Demo")
 while True:
    
-  user_message = input(Fore.BLUE + "Você: ")
+  user_message = input(Fore.YELLOW + "Você: " + Fore.WHITE)
   
   # Adicione a mensagem do usuário ao histórico
   messages.append({"role": "user", "content": user_message})
@@ -66,4 +67,4 @@ while True:
   # Adicione a resposta do assistente ao histórico
   messages.append({"role": "assistant", "content": assistant_response})
 
-  print(Fore.GREEN + "MariTalk: " + assistant_response)
+  print(Fore.GREEN + "MariTalk: "+ Fore.WHITE + assistant_response)
