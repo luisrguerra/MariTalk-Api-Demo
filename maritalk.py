@@ -8,10 +8,10 @@ messages = [
     {"role": "user", "content": "Você pode me falar quanto é 25 + 27?"},
 ]
 
-my_key = ""  # Coloque aqui a sua chave de API (ex: "10035481...").
+API_KEY = ""  # Coloque aqui a sua chave de API (ex: "10035481...").
 
 auth_header = {
-    "authorization": f"Key {my_key}"
+    "authorization": f"Key {API_KEY}"
 }
 
 request_data = {
