@@ -5,7 +5,7 @@ url = "https://chat.maritaca.ai/api/chat/inference"
 messages = [
     {"role": "user", "content": "bom dia, esta é a mensagem do usuario"},
     {"role": "assistant", "content": "bom dia, esta é a resposta do assistente"},
-    {"role": "user", "content": "Você pode me falar quanto é 25 + 27?"},
+    {"role": "user", "content": "Qual é o sentido da vida?"},
 ]
 
 API_KEY = ""  # Coloque aqui a sua chave de API (ex: "10035481...").
@@ -14,13 +14,16 @@ auth_header = {
     "authorization": f"Key {API_KEY}"
 }
 
-request_data = {
-  "messages": messages,
-  "do_sample": True,
-  'max_tokens': 200,
-  "temperature": 0.7,
-  "top_p": 0.95,
-}
+def create_request_data(messages, do_sample=True, max_tokens=200, temperature=0.7, top_p=0.95):
+    return {
+        "messages": messages,
+        "do_sample": do_sample,
+        'max_tokens': max_tokens,
+        "temperature": temperature,
+        "top_p": top_p,
+    }
+
+request_data = create_request_data(messages)
 
 
 def get_maritalk_response(request_data, headers):
