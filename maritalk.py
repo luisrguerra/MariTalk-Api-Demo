@@ -35,8 +35,9 @@ def check_rate_limit(response):
     else:
         return False
 
-def get_maritalk_response(request_data):
+def get_maritalk_response(messages):
   auth_header = create_auth_header(api_key)
+  request_data = create_request_data(messages)
   response = post_request(api_url, request_data, auth_header)
 
   if check_rate_limit(response):
@@ -61,11 +62,9 @@ while True:
   
   # Adiciona a mensagem do usuário ao histórico
   messages.append({"role": "user", "content": user_message})
-  
-  request_data = create_request_data(messages)
 
   # Obtenha a resposta do assistente
-  assistant_response = get_maritalk_response(request_data)
+  assistant_response = get_maritalk_response(messages)
   
   # Adicione a resposta do assistente ao histórico
   messages.append({"role": "assistant", "content": assistant_response})
