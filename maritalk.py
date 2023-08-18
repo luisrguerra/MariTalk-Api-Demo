@@ -8,10 +8,10 @@ messages = [
     {"role": "user", "content": "Qual é o sentido da vida?"},
 ]
 
-API_KEY = ""  # Coloque aqui a sua chave de API (ex: "10035481...").
+api_key = ""  # Coloque aqui a sua chave de API (ex: "10035481...").
 
 auth_header = {
-    "authorization": f"Key {API_KEY}"
+    "authorization": f"Key {api_key}"
 }
 
 def create_request_data(messages, do_sample=True, max_tokens=200, temperature=0.7, top_p=0.95):
@@ -22,8 +22,6 @@ def create_request_data(messages, do_sample=True, max_tokens=200, temperature=0.
         "temperature": temperature,
         "top_p": top_p,
     }
-
-request_data = create_request_data(messages)
 
 def post_request(api_url, request_data, headers):
     return requests.post(
@@ -45,5 +43,6 @@ def get_maritalk_response(request_data, headers):
   else:
     response.raise_for_status()
 
+request_data = create_request_data(messages)
 
 get_maritalk_response(request_data, auth_header)
