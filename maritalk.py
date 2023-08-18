@@ -1,4 +1,5 @@
 import requests
+from colorama import Fore
 
 api_url = "https://chat.maritaca.ai/api/chat/inference"
 
@@ -32,31 +33,37 @@ def check_rate_limit(response):
     else:
         return False
 
-def get_maritalk_response(request_data, headers):
-  response = post_request(api_url, request_data, headers)
+def get_maritalk_response(request_data):
+  auth_header = create_auth_header(api_key)
+  response = post_request(api_url, request_data, auth_header)
 
   if check_rate_limit(response):
      print("Limite de taxa atingido, tente novamente em breve")
-
+     return None
   elif response.ok:
     data=response.json()
-    print("Resposta: " + data["answer"])
+    return data["answer"]
 
   else:
     response.raise_for_status()
+    return None
 
-auth_header = create_auth_header(api_key)
+# Inicialize a lista de mensagens
+messages = []
 
 while True:
    
-  message = input("Insira sua mensagem: ")
+  user_message = input(Fore.BLUE + "Você: ")
   
-  messages = [
-      ##{"role": "user", "content": "bom dia, esta é a mensagem do usuario"},
-      ##{"role": "assistant", "content": "bom dia, esta é a resposta do assistente"},
-      {"role": "user", "content": message},
-  ]
-  
+  # Adicione a mensagem do usuário ao histórico
+  messages.append({"role": "user", "content": user_message})
+
   request_data = create_request_data(messages)
+
+  # Obtenha a resposta do assistente
+  assistant_response = get_maritalk_response(request_data)
   
-  get_maritalk_response(request_data, auth_header)
+  # Adicione a resposta do assistente ao histórico
+  messages.append({"role": "assistant", "content": assistant_response})
+
+  print(Fore.GREEN + "MariTalk: " + assistant_response)
