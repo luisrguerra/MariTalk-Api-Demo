@@ -32,3 +32,9 @@ After that, new tokens are generated at a rate of 10 to 15 tokens/sec.
 # Web Interface
 Try the Web interface at:
 [chat.maritaca.ai](chat.maritaca.ai)
+
+## Como iniciar o projeto nesse repositório
+
+- Instale o Python 3
+- Execute o comando `pip install -r requirements.txt` ou clique no script install-requirements.bat para instalar as dependências
+- Execute o comando `python maritalk.py` ou clique no script run.bat
